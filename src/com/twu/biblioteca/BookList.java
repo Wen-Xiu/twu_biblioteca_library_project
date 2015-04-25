@@ -1,30 +1,23 @@
 package com.twu.biblioteca;
 import java.io.*;
-import java.util.Scanner;
+//import java.util.Scanner;
 import java.util.Hashtable;
 import java.util.*;
 
 /**
  * Created by qnxu on 4/20/15.
  */
-public class BookList {
-//    private String[] books = {"<Jane Eyre>","<Lord of the Ring>","<Pride and Prejudice>","<the kiter runner>"};
+public class BookList extends TerminateSystem{
 
-    private static Hashtable availableBooks = new Hashtable();
-    private static Hashtable lentBooks = new Hashtable();
-    private String[][] ss = {{"0","<Jane Eyre>","author 1","1880-01-02"},{"1","<Lord of the Ring>","author 2","1880-03-09"}};
-    private Menu menu = new Menu();
-    private Scanner sc = new Scanner(System.in);
-    public void printLocalBookList(){
-        initiateBooks();
-        printBookList();
-    }
 
-    public static void initiateBooks(){
-        availableBooks.put("<Jane Eyre>", "author 1,   1880-01-02");
-        availableBooks.put("<Lord of the Ring>", "author 2,   1880-03-09");
-        availableBooks.put("<Pride and Prejudice>", "author 3,   1880-04-03");
-        availableBooks.put("<the kiter runner>", "author 4,   1864-02-03");
+    private static Hashtable availableBooks;
+    private static Hashtable lentBooks;
+
+    private UserInput userInput = new UserInput();
+
+    public BookList(Hashtable availableOnes, Hashtable unavailableOnes){
+        availableBooks = availableOnes;
+        lentBooks = unavailableOnes;
     }
 
     private void printListTitle(){
@@ -40,72 +33,61 @@ public class BookList {
         }
     }
 
-    public void operateBookList(String operation) throws IOException {
-        if (operation.equals("checkout")) checkout();
-        else if (operation.equals("returnBook")) {returnBook();}
+    public String checkoutOrReturnBook(String operation, String bookName)throws IOException{
+        if(!operation.equals("returnBook") && !operation.equals("checkout"))
+            throw new IOException("wrong input format!!!");
+        else if(operation.equals("checkout"))
+            return checkout(bookName);
+        else
+            return returnBook(bookName);
+
     }
 
-    private void checkout() throws IOException {
-        System.out.println("Enter the book name to checkout the book");
-        String input = sc.nextLine();
-        Menu menu = new Menu();
-        if(!input.equals("e")) {
-            if (availableBooks.containsKey(input) == true) {
-                successfulCheckout(input);
-            }
-            else unsuccessfulCheckout();
-        }
-        else {
-            menu.currentState = "booklist";
-            menu.exitOrNot(input);
-            return;
-        }
-        printBookList();
-        menu.jumpToMenu();
+    public String checkout(String bookName) throws IOException {
+//        if(availableBooks.equals(null)) ;
+        if (availableBooks.containsKey(bookName) == true)
+            return successfulCheckout(bookName);
+        else return unsuccessfulCheckout();
+
     }
 
-
-    private void returnBook() throws IOException {
-        System.out.println("Enter the book name to checkout the book");
-        String input = sc.nextLine();
-        Menu menu = new Menu();
-        if(!input.equals("e")) {
-            if (lentBooks.containsKey(input) == true)
-            successfulReturnBook(input);
-            else unsuccessfulReturnBook();
-        }
-        else {
-            menu.currentState = "booklist";
-            menu.exitOrNot(input);
-            return;
-        }
-        printBookList();
-        menu.jumpToMenu();
+    public String returnBook(String bookName) throws IOException {
+        if (lentBooks.containsKey(bookName) == true)
+            return  successfulReturnBook(bookName);
+        else return unsuccessfulReturnBook();
     }
 
-    private void successfulCheckout(String bookName){
+    public void printOperationMessage(String operation){
+        System.out.println("Enter the book name to "+ operation + " the book");
+    }
+
+    private String successfulCheckout(String bookName){
         transferElementToAnotherHashTable(bookName, availableBooks, lentBooks);
         System.out.println("Thank you, enjoy the book!");
+        return "successful";
     }
-    private void unsuccessfulCheckout() throws IOException {
-        System.out.println("That book is not available.");
-        checkout();
+    private String unsuccessfulCheckout() throws IOException {
+        System.out.println("That book is not available. Please enter again(press 'q' to quit)");
+        return "unsuccessful";
     }
 
-    private void successfulReturnBook(String bookName){
+    private String successfulReturnBook(String bookName){
         transferElementToAnotherHashTable(bookName, lentBooks, availableBooks);
         System.out.println("Thank you for returning the book.");
+        return "successful";
     }
 
-    private void unsuccessfulReturnBook() throws IOException{
-        System.out.println("Sorry, that is not a valid book to return.");
-        returnBook();
+    private String unsuccessfulReturnBook() throws IOException{
+        System.out.println("Sorry, that is not a valid book to return.please enter again(press 'q' to quit)");
+        return "unsuccessful";
     }
 
-    private void transferElementToAnotherHashTable(String transferKey, Hashtable sourceTable, Hashtable DestTable){
+    public void transferElementToAnotherHashTable(String transferKey, Hashtable sourceTable, Hashtable DestTable){
         Object value = sourceTable.get(transferKey);
         DestTable.put(transferKey,value);
         sourceTable.remove(transferKey);
     }
+
+
 
 }

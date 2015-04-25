@@ -1,11 +1,17 @@
 package com.twu.biblioteca;
 
 import junit.framework.TestCase;
-import org.mockito.Mockito.*;
+import org.junit.Test;
+import org.mockito.*;
 
+import java.io.IOException;
 import java.util.Hashtable;
+import java.util.Scanner;
 
+import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 
 /**
@@ -13,10 +19,22 @@ import static org.mockito.Mockito.mock;
  */
 public class BookListTest extends TestCase {
 
-    public void testReturnBoo(){
+    @Test
+    public void testCheckout() throws IOException {
+
         BookList mockBookList = mock(BookList.class);
-        String bookName = "<test book>";
-        Hashtable lentBook = new Hashtable();
-        lentBook.put(bookName,"author, publish data");
+        UserInput mockUserInput = mock(UserInput.class);
+
+        Hashtable books = new Hashtable();
+        Hashtable lentBooks = new Hashtable();
+        String bookName = "<Jane Eyre>";
+        books.put(bookName, "author, publish data");
+        BookList bookListForTest = new BookList(books,lentBooks);
+
+        assertEquals("successful",bookListForTest.checkoutOrReturnBook("checkout","<Jane Eyre>"));
+        assertTrue(books.isEmpty());
+        assertTrue(lentBooks.containsKey("<Jane Eyre>"));
+        assertEquals("unsucessful",bookListForTest.checkoutOrReturnBook("checkout","<Jane Eyre>");
     }
+
 }
