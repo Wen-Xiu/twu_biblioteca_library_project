@@ -34,7 +34,7 @@ public class BookListTest extends TestCase {
         assertEquals("successful",bookListForTest.checkoutOrReturnBook("checkout","<Jane Eyre>"));
         assertTrue(books.isEmpty());
         assertTrue(lentBooks.containsKey("<Jane Eyre>"));
-        assertEquals("unsucessful",bookListForTest.checkoutOrReturnBook("checkout","<Jane Eyre>");
+        assertEquals("unsuccessful",bookListForTest.checkoutOrReturnBook("checkout","<unavailable book>"));
     }
 
 }
