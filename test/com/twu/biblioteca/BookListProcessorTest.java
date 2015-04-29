@@ -1,0 +1,43 @@
+package com.twu.biblioteca;
+
+import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.io.IOException;
+import java.util.Hashtable;
+
+import static org.mockito.Mockito.mock;
+
+
+/**
+ * Created by qnxu on 4/20/15.
+ */
+public class BookListProcessorTest extends TestCase {
+    @Before
+    public void setUp(){
+    }
+    @Test
+    public void testCheckoutOrReturnBook() throws IOException {
+
+        BookListProcessor mockBookListProcessor = mock(BookListProcessor.class);
+        UserInput mockUserInput = mock(UserInput.class);
+
+        Hashtable availableList = new Hashtable();
+        Hashtable lentList = new Hashtable();
+        Book book = new Book("Jane Eyre", "author", "publish year");
+        availableList.put(book.name, book);
+        BookList bookList = new BookList(availableList,lentList);
+        BookListProcessor bookListProcessorForTest = new BookListProcessor(bookList);
+        bookListProcessorForTest.printOperationMessage("return", "book");
+        assertEquals("unsuccessful", bookListProcessorForTest.checkoutOrReturnBook("return to library", "Jane Eyre"));
+        assertEquals("successful", bookListProcessorForTest.checkoutOrReturnBook("checkout", "Jane Eyre"));
+        assertFalse(availableList.containsKey("Jane Eyre"));
+        assertTrue(lentList.containsKey("Jane Eyre"));
+        assertEquals("unsuccessful", bookListProcessorForTest.checkoutOrReturnBook("checkout", "unavailable book"));
+        assertEquals("successful", bookListProcessorForTest.checkoutOrReturnBook("return to library", "Jane Eyre"));
+        assertFalse(lentList.containsKey("Jane Eyre"));
+        assertTrue(availableList.containsKey("Jane Eyre"));
+    }
+
+}

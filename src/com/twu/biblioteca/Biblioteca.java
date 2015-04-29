@@ -7,13 +7,22 @@ public class Biblioteca {
 
 
     public static void main(String[] args) throws IOException {
-        Books books = new Books();
+        Hashtable availableBooks = new Hashtable();
+        Hashtable lentBooks = new Hashtable();
+        BookList bookList = new BookList(availableBooks,lentBooks);
+        BookListProcessor bookListProcessor = new BookListProcessor(bookList);
+
+        Hashtable availableMovies = new Hashtable();
+        Hashtable lentMovies = new Hashtable();
+        MovieList movieList = new MovieList(availableMovies, lentMovies);
+        MovieListProcessor movieListProcessor = new MovieListProcessor(movieList);
+
         WelcomeMessage welcomeMessage = new WelcomeMessage();
         welcomeMessage.printWelcomeMessage();
-        BookList booklist = new BookList(books.availableBooks, books.lentBooks);
-        booklist.printBookList();
-        ProcessOperation processOperation = new ProcessOperation(booklist);
-        processOperation.operateMenu();
+
+        bookListProcessor.printBookList();
+        MainProcessor mainProcessor = new MainProcessor(bookListProcessor, movieListProcessor);
+        mainProcessor.operateMenu();
     }
 
 }
