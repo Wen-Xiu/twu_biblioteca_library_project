@@ -32,7 +32,8 @@ public class Menu{
         System.out.println("MENU: ");
     }
 
-    public void printExit(){
+    public void printExit()
+    {
         System.out.println("press 'q' to exit ");
     }
 

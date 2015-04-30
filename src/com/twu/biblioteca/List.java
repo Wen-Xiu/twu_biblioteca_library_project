@@ -32,6 +32,17 @@ public class List {
         list.remove(movie.getMovieName());
     }
 
+    public void addToList(User user)
+    {
+        list.put(user.getUserName(), user);
+    }
+
+    public void removeFromList(User user)
+    {
+        list.remove(user.getUserName());
+    }
+
+
     public Hashtable getList(){
         return list;
     }
