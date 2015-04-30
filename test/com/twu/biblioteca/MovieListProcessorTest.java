@@ -15,15 +15,10 @@ public class MovieListProcessorTest extends TestCase {
 
     public void testCheckoutOrReturnMovie() throws IOException {
 
-        MovieListProcessor mockMovieListProcessor = mock(MovieListProcessor.class);
-        UserInput mockUserInput = mock(UserInput.class);
-
         Hashtable availableList = new Hashtable();
         Hashtable lentList = new Hashtable();
-        Movie movie = new Movie("Happiness", "1990", "derector", 8);
-        availableList.put(movie.name, movie);
-        MovieList movieList = new MovieList(availableList,lentList);
-        MovieListProcessor movieListProcessorForTest = new MovieListProcessor(movieList);
+
+        MovieListProcessor movieListProcessorForTest = new MovieListProcessor(availableList, lentList);
         movieListProcessorForTest.printOperationMessage("return", "movie");
         assertEquals("unsuccessful", movieListProcessorForTest.checkoutOrReturnMovie("return to library", "Happiness"));
         assertEquals("successful", movieListProcessorForTest.checkoutOrReturnMovie("checkout", "Happiness"));

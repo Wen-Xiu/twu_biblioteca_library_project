@@ -18,9 +18,6 @@ public class MainProcessor {
         movieListProcessor = movieProcessor;
     }
 
-    MainProcessor(MovieListProcessor processor){
-        movieListProcessor = processor;
-    }
 
     public void operateMenu() throws IOException {
         try {
@@ -77,7 +74,7 @@ public class MainProcessor {
             try {
                 currentState = "book list";
                 bookListProcessor.printOperationMessage(operation, "book");
-                String input = exitOrTerminateAccordingInput();
+                String input = exitOrTerminateOrReturnInput();
                 if (!input.equals("e") && !input.equals("q")) {
                     String operationResult = bookListProcessor.checkoutOrReturnBook(operation, input);
                     bookListProcessor.printBookList();
@@ -95,7 +92,7 @@ public class MainProcessor {
             try {
                 currentState = "movie list";
                 movieListProcessor.printOperationMessage(operation, "movie");
-                String input = exitOrTerminateAccordingInput();
+                String input = exitOrTerminateOrReturnInput();
                 if (!input.equals("e") && !input.equals("q")) {
                     String operationResult = movieListProcessor.checkoutOrReturnMovie(operation, input);
                     movieListProcessor.printMovieList();
@@ -116,7 +113,7 @@ public class MainProcessor {
     }
 
 
-    private String exitOrTerminateAccordingInput() throws IOException{
+    private String exitOrTerminateOrReturnInput() throws IOException{
         String input = userInput.inputWithConsole();
         terminateSystemOrNot(input);
         exitOrNot(input);

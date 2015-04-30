@@ -19,16 +19,10 @@ public class BookListProcessorTest extends TestCase {
     }
     @Test
     public void testCheckoutOrReturnBook() throws IOException {
-
-        BookListProcessor mockBookListProcessor = mock(BookListProcessor.class);
-        UserInput mockUserInput = mock(UserInput.class);
-
         Hashtable availableList = new Hashtable();
         Hashtable lentList = new Hashtable();
-        Book book = new Book("Jane Eyre", "author", "publish year");
-        availableList.put(book.name, book);
-        BookList bookList = new BookList(availableList,lentList);
-        BookListProcessor bookListProcessorForTest = new BookListProcessor(bookList);
+
+        BookListProcessor bookListProcessorForTest = new BookListProcessor(availableList, lentList);
         bookListProcessorForTest.printOperationMessage("return", "book");
         assertEquals("unsuccessful", bookListProcessorForTest.checkoutOrReturnBook("return to library", "Jane Eyre"));
         assertEquals("successful", bookListProcessorForTest.checkoutOrReturnBook("checkout", "Jane Eyre"));
