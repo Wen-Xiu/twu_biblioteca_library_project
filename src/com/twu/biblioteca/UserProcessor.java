@@ -6,11 +6,12 @@ import java.util.Hashtable;
 /**
  * Created by qnxu on 4/30/15.
  */
-public class UserListProcessor {
+public class UserProcessor {
 
     private List userList;
+    private User loginUser;
 
-    UserListProcessor(Hashtable user){
+    UserProcessor(Hashtable user){
         userList= new List(user);
         initializeUserList();
     }
@@ -26,16 +27,12 @@ public class UserListProcessor {
 
     private void printInfoTitle()
     {
-        System.out.println("       User Name           User Email Address            User Phone Number");
+        System.out.println("User Name           User Email Address            User Phone Number");
     }
 
-    public void printUserInfo(){
+    public void printUserInfo( ){
         printInfoTitle();
-        Enumeration keys = userList.getNamesFromList();
-        while (keys.hasMoreElements()) {
-            User user = (User)userList.getList().get(keys.nextElement());
-            System.out.println(user.getUserName() + "    " + user.getUserEmailAddress() + "    " + user.getUserPhoneNumber());
-        }
+        System.out.println(loginUser.getUserName() + "    " + loginUser.getUserEmailAddress() + "    " + loginUser.getUserPhoneNumber());
     }
 
     public String loginSuccessfullyOrNot(String userName, String password){
@@ -43,6 +40,7 @@ public class UserListProcessor {
         if(user.verifyPassword(password) == true)
         {
             user.changeUserState(true);
+            loginUser = getUserInfo(userName);
             return "successful";
         }
         else
@@ -54,6 +52,10 @@ public class UserListProcessor {
 
     public User getUserInfo(String userName){
         return (User)userList.getObject(userName);
+    }
+
+    public void printLoginMessage(){
+        System.out.println("please input username and password to login");
     }
 
 //    private void

@@ -10,44 +10,81 @@ public class MainProcessor {
 
     private BookListProcessor bookListProcessor;
     private MovieListProcessor movieListProcessor;
+    private UserProcessor userProcessor;
     private Menu menu = new Menu();
     private String currentState = "";
 
-    MainProcessor(BookListProcessor bookProcessor, MovieListProcessor movieProcessor){
+    MainProcessor(BookListProcessor bookProcessor, MovieListProcessor movieProcessor, UserProcessor userProcessor){
         bookListProcessor = bookProcessor;
         movieListProcessor = movieProcessor;
+        this.userProcessor = userProcessor;
     }
 
-
-    public void operateMenu() throws IOException {
+    public void operateMenuAfterLogin() throws IOException {
         try {
-            menu.printMenu();
+            menu.printMenuAfterLogin();
             String input = userInput.inputWithConsole();
             terminateSystemOrNot(input);
             char menuInput = input.charAt(0);
             if (input.equals(null) || "012345e".indexOf(menuInput) < 0)
                 throw new IOException("wrong input format!!!");
             switch (menuInput) {
-                case '0': bookListProcessor.printBookList();
-                    jumpToMenu();
+                case '0': userProcessor.printUserInfo();
+                case '1': bookListProcessor.printBookList();
+                    operateMenuAfterLogin();
                     break;
-                case '1': operateBookList("checkout");
+                case '2': operateBookList("checkout");
                     break;
-                case '2': operateBookList("return to library");
+                case '3': operateBookList("return to library");
                     break;
-                case '3': movieListProcessor.printMovieList();
-                    jumpToMenu();
+                case '4': movieListProcessor.printMovieList();
+                    operateMenuAfterLogin();;
                     break;
-                case '4': operateMovieList("checkout");
+                case '5': operateMovieList("checkout");
                     break;
-                case '5': operateMovieList("return to library");
+                case '6': operateMovieList("return to library");
                     break;
-                case 'e': jumpToMenu();
+                case 'e': operateMenuAfterLogin();;
                     break;
             }
         } catch (IOException e){
             System.out.println(e.getMessage());
-            operateMenu();
+            operateMenuAfterLogin();
+        }
+    }
+
+
+    public void operateMenuBeforeLogin(){
+        try {
+            menu.printMenuBeforeLogin();
+            String input = userInput.inputWithConsole();
+            terminateSystemOrNot(input);
+            char menuInput = input.charAt(0);
+            if (input.equals(null) || "012345e".indexOf(menuInput) < 0)
+                throw new IOException("wrong input format!!!");
+            switch (menuInput) {
+                case '0': logIntoSystem();
+                case '1': bookListProcessor.printBookList();
+                    operateMenuBeforeLogin();
+                    break;
+            }
+        } catch (IOException e){
+            System.out.println(e.getMessage());
+            operateMenuBeforeLogin();
+        }
+    }
+
+
+    public void logIntoSystem() throws IOException{
+        String username = userInput.inputWithConsole();
+        String password = userInput.inputWithConsole();
+        if(userProcessor.loginSuccessfullyOrNot(username, password).equals("successful")){
+            System.out.println("Welcome back!!");
+            operateMenuAfterLogin();
+        }
+        else {
+            System.out.println("Login failed, please check your username and passwords");
+            operateMenuBeforeLogin();
         }
     }
 
@@ -58,14 +95,11 @@ public class MainProcessor {
             System.exit(0);
         }
     }
-    public void jumpToMenu() throws IOException {
-        operateMenu();
-    }
 
     public void exitOrNot(String input) throws IOException {
         if(input.equals("e")) {
             System.out.println("You've exited from " + currentState);
-            operateMenu();
+            operateMenuAfterLogin();
         }
     }
 

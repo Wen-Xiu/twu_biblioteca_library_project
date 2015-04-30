@@ -15,12 +15,15 @@ public class Biblioteca {
         Hashtable lentMovies = new Hashtable();
         MovieListProcessor movieListProcessor = new MovieListProcessor(availableMovies,lentMovies);
 
+        Hashtable userList = new Hashtable();
+        UserProcessor userProcessor = new UserProcessor(userList);
+
         WelcomeMessage welcomeMessage = new WelcomeMessage();
         welcomeMessage.printWelcomeMessage();
 
         bookListProcessor.printBookList();
-        MainProcessor mainProcessor = new MainProcessor(bookListProcessor, movieListProcessor);
-        mainProcessor.operateMenu();
+        MainProcessor mainProcessor = new MainProcessor(bookListProcessor, movieListProcessor, userProcessor);
+        mainProcessor.operateMenuBeforeLogin();
     }
 
 }

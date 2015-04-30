@@ -8,23 +8,38 @@ import java.util.Scanner;
  * Created by qnxu on 4/20/15.
  */
 public class Menu{
-    private Hashtable menu = new Hashtable();
+    private Hashtable menuAfterLogin = new Hashtable();
+    private Hashtable menuBeforeLogin = new Hashtable();
     private UserInput userInput = new UserInput();
 
-    private void initializeMenu(){
-        menu.put(0, "List books");
-        menu.put(1, "Checkout books");
-        menu.put(2, "Return books");
-        menu.put(3, "List movies");
-        menu.put(4, "Checkout movies");
-        menu.put(5, "Return movies");
+    private void initializeMenuAfterLogin(){
+        menuAfterLogin.put(0,"User Information");
+        menuAfterLogin.put(1, "List books");
+        menuAfterLogin.put(2, "Checkout books");
+        menuAfterLogin.put(3, "Return books");
+        menuAfterLogin.put(4, "List movies");
+        menuAfterLogin.put(5, "Checkout movies");
+        menuAfterLogin.put(6, "Return movies");
     }
 
-    public void printMenu() throws IOException {
-        initializeMenu();
+    private void initializeMenuBeforeLogin(){
+        menuBeforeLogin.put(0,"Login");
+        menuBeforeLogin.put(1, "List books");
+    }
+
+    public void printMenuAfterLogin() throws IOException {
+        initializeMenuAfterLogin();
         printMenuTitle();
-        for (int i = 0; i < menu.size(); i++) {
-            System.out.println(i + " : " + menu.get(i));
+        for (int i = 0; i < menuAfterLogin.size(); i++) {
+            System.out.println(i + " : " + menuAfterLogin.get(i));
+        }
+    }
+
+    public void printMenuBeforeLogin() throws IOException {
+        initializeMenuBeforeLogin();
+        printMenuTitle();
+        for (int i = 0; i < menuBeforeLogin.size(); i++) {
+            System.out.println(i + " : " + menuBeforeLogin.get(i));
         }
     }
 
